@@ -137,12 +137,16 @@ def main():
     
     args = parser.parse_args()
     
+    # Convert relative paths to absolute paths
+    file1 = os.path.abspath(args.file1)
+    file2 = os.path.abspath(args.file2)
+    
     # Check if files exist
-    if not os.path.exists(args.file1):
+    if not os.path.exists(file1):
         print(f"Error: File '{args.file1}' not found", file=sys.stderr)
         sys.exit(1)
     
-    if not os.path.exists(args.file2):
+    if not os.path.exists(file2):
         print(f"Error: File '{args.file2}' not found", file=sys.stderr)
         sys.exit(1)
     
@@ -154,7 +158,7 @@ def main():
     
     try:
         # Compare files
-        left_diff, right_diff = engine.compare_files(args.file1, args.file2)
+        left_diff, right_diff = engine.compare_files(file1, file2)
         
         # Format output
         formatter = SideBySideFormatter(
@@ -162,7 +166,7 @@ def main():
             width=args.width
         )
         
-        diff_output = formatter.format_diff(left_diff, right_diff, args.file1, args.file2)
+        diff_output = formatter.format_diff(left_diff, right_diff, file1, file2)
         print(diff_output)
         
         # Show statistics if requested

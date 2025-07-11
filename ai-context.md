@@ -159,6 +159,16 @@ python src/main.py test_files/file1.txt test_files/file2.txt -s
 **Solution**: Implemented truncation with "..." indicator
 **Status**: Implemented
 
+### Issue 4: Relative Path Resolution (Fixed 2025-01-07)
+**Problem**: cdiff and gdiff commands failed with relative paths when run from different directories
+**Root Cause**: `os.path.exists()` checks were performed on relative paths without resolving them to absolute paths first
+**Solution**: Modified both `cli.py` and `gdiff.py` to use `os.path.abspath()` to convert relative paths to absolute paths before file existence checks
+**Files Modified**:
+- `src/cli.py`: Added `file1 = os.path.abspath(args.file1)` and `file2 = os.path.abspath(args.file2)`
+- `src/gdiff.py`: Added similar absolute path conversion for GUI file arguments
+**Testing**: Verified that both CLI and GUI now work correctly with relative paths from any directory
+**Status**: Fixed
+
 ## Future Enhancement Opportunities
 
 ### High Priority

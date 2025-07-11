@@ -36,12 +36,16 @@ Examples:
     if args.file2 and not args.file1:
         parser.error("If file2 is provided, file1 must also be provided")
     
+    # Convert relative paths to absolute paths
+    file1 = os.path.abspath(args.file1) if args.file1 else None
+    file2 = os.path.abspath(args.file2) if args.file2 else None
+    
     # Check if files exist
-    if args.file1 and not os.path.exists(args.file1):
+    if file1 and not os.path.exists(file1):
         print(f"Error: File '{args.file1}' not found", file=sys.stderr)
         sys.exit(1)
     
-    if args.file2 and not os.path.exists(args.file2):
+    if file2 and not os.path.exists(file2):
         print(f"Error: File '{args.file2}' not found", file=sys.stderr)
         sys.exit(1)
     
@@ -54,11 +58,11 @@ Examples:
         app = DiffGUI(root)
         
         # Pre-populate files if provided
-        if args.file1 and args.file2:
-            app.file1_var.set(os.path.abspath(args.file1))
-            app.file2_var.set(os.path.abspath(args.file2))
-            app.file1_path = os.path.abspath(args.file1)
-            app.file2_path = os.path.abspath(args.file2)
+        if file1 and file2:
+            app.file1_var.set(file1)
+            app.file2_var.set(file2)
+            app.file1_path = file1
+            app.file2_path = file2
             
             # Set ignore whitespace if specified
             if args.ignore_whitespace:
