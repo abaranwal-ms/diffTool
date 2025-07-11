@@ -263,6 +263,79 @@ pyinstaller --onefile --windowed src/main.py
 - Minimal startup time for CLI interface
 - GUI responsive for files up to several thousand lines
 
+## System PATH Integration (Added 2025-01-07)
+
+### PATH Setup Process
+Successfully integrated the `wdiff` command into Windows system PATH for global accessibility.
+
+#### Implementation Steps
+1. **Permanent PATH Configuration**:
+   ```powershell
+   [Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\poc\diffTool", "User")
+   ```
+   - Added to User PATH scope for persistence across sessions
+   - Path: `C:\poc\diffTool` (contains wdiff.bat)
+
+2. **Current Session PATH Update**:
+   ```powershell
+   $env:PATH += ";C:\poc\diffTool"
+   ```
+   - Required for immediate use in current session
+   - User PATH changes don't take effect until new session
+
+#### Key Learnings: Windows PATH Behavior
+- **User PATH vs Session PATH**: Changes to User PATH require new terminal session to load
+- **Immediate vs Persistent**: Need both session update and permanent setting
+- **Verification**: Use `[Environment]::GetEnvironmentVariable("PATH", "User")` to verify permanent changes
+
+### PowerShell Specific Considerations (Added 2025-01-07)
+
+#### Command Syntax Differences
+- **No `&&` operator**: PowerShell doesn't support bash-style command chaining
+- **Separate commands**: Use semicolons or separate lines instead
+- **Path separators**: Use backslashes for Windows paths
+
+#### Batch File Execution
+- **Relative paths**: Use `.\wdiff.bat` syntax in PowerShell
+- **PATH discovery**: Batch files must be in PATH or called with explicit path
+- **Working directory**: Batch file uses `cd /d "%~dp0"` to ensure correct working directory
+
+#### Output Capture Issues
+- **Terminal output**: Some PowerShell commands don't capture output properly in automation
+- **Success verification**: Commands execute successfully even when output isn't captured
+- **Alternative methods**: Use direct file/environment checks for verification
+
+### Global Command Usage (Added 2025-01-07)
+
+#### Successful Command Integration
+```bash
+# Global usage now available
+wdiff --help                    # Shows usage information
+wdiff file1.txt file2.txt      # CLI comparison
+wdiff -s file1.txt file2.txt   # With statistics
+wdiff --gui                    # Launch GUI interface
+```
+
+#### Testing Results
+- **CLI functionality**: Side-by-side comparison works correctly
+- **GUI integration**: Launches successfully with `wdiff --gui`
+- **Path resolution**: Works with both relative and absolute file paths
+- **Statistics display**: Proper formatting and alignment maintained
+
+### Documentation Integration (Added 2025-01-07)
+
+#### README Enhancement
+- Added cross-references to ai-context.md for technical details
+- Enhanced Future Enhancements section with priority levels
+- Improved Contributing section with context file references
+- Maintained user-friendly documentation while pointing to technical details
+
+#### Context Documentation Strategy
+- **Separation of concerns**: User docs vs technical/AI context
+- **Cross-referencing**: Proper linking between documentation files
+- **Living documentation**: AI context updated with new learnings
+- **Development continuity**: Comprehensive context for future AI assistance
+
 ## Maintenance Considerations
 
 ### Dependencies
@@ -275,4 +348,9 @@ pyinstaller --onefile --windowed src/main.py
 - Clear separation of concerns
 - Well-documented interfaces
 
-This context document provides complete information for future development, maintenance, and enhancement of the Windows Diff Tool project.
+### System Integration
+- Global command availability through PATH
+- Works across different terminal types (PowerShell, CMD)
+- Persistent configuration survives system restarts
+
+This context document provides complete information for future development, maintenance, and enhancement of the Windows Diff Tool project, including system integration and deployment considerations.

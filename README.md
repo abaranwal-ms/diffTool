@@ -188,15 +188,38 @@ To create a standalone executable:
 
 This project is open source and available under the MIT License.
 
+## Development & AI Context
+
+For detailed development information, architecture decisions, and AI-assisted development context, see [ai-context.md](ai-context.md). This document contains:
+
+- Complete development process and decisions
+- Technical implementation details
+- Testing results and known issues
+- Future enhancement roadmap
+- Code quality standards and deployment options
+
 ## Contributing
 
-Contributions are welcome! Please feel free to submit pull requests or report issues.
+Contributions are welcome! Please feel free to submit pull requests or report issues. Before contributing, please review the [ai-context.md](ai-context.md) file for detailed technical context and development standards.
 
 ## Future Enhancements
 
-- Directory comparison
-- Binary file support
-- Syntax highlighting for different file types
-- Export to HTML/PDF
-- Integration with version control systems
-- Plugin system for custom comparisons
+Based on the development roadmap in [ai-context.md](ai-context.md):
+
+### High Priority
+- **Syntax Highlighting**: Add pygments integration for code files
+- **Word-level Differences**: Highlight specific changed words within lines
+- **Directory Comparison**: Compare entire directory structures
+- **Binary File Support**: Handle binary files with hex comparison
+
+### Medium Priority
+- **Export Functionality**: Save results to HTML/PDF
+- **Configuration Files**: User-customizable settings
+- **Plugin System**: Allow custom comparison algorithms
+- **Performance Optimization**: Handle very large files more efficiently
+
+### Low Priority
+- **Integration with VCS**: Git/SVN integration
+- **Network File Support**: Compare files over network
+- **Backup/Restore**: Integrated backup functionality
+- **Themes**: Multiple color schemes
