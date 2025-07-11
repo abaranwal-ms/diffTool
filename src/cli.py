@@ -134,12 +134,25 @@ def main():
                        help="Output width (default: 120)")
     parser.add_argument("-s", "--stats", action="store_true",
                        help="Show statistics")
+    parser.add_argument("--user-dir", help="Original user working directory for relative path resolution")
     
     args = parser.parse_args()
     
     # Convert relative paths to absolute paths
-    file1 = os.path.abspath(args.file1)
-    file2 = os.path.abspath(args.file2)
+    # Use user directory if provided, otherwise use current directory
+    base_dir = args.user_dir if args.user_dir else os.getcwd()
+    
+    if os.path.isabs(args.file1):
+        file1 = args.file1
+    else:
+        file1 = os.path.join(base_dir, args.file1)
+    file1 = os.path.abspath(file1)
+    
+    if os.path.isabs(args.file2):
+        file2 = args.file2
+    else:
+        file2 = os.path.join(base_dir, args.file2)
+    file2 = os.path.abspath(file2)
     
     # Check if files exist
     if not os.path.exists(file1):

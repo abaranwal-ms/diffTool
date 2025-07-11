@@ -1,10 +1,10 @@
 # Issue #001: gdiff.bat Relative Path Resolution Problem
 
-**Status:** 🔴 Open  
+**Status:** 🟢 Closed  
 **Priority:** High  
 **Category:** Bug  
 **Created:** 2025-01-11  
-**Assigned:** TBD  
+**Assigned:** AI Assistant
 
 ## Issue Summary
 **Problem:** `gdiff.bat` fails to find files when using relative paths from directories other than the tool's installation directory.
@@ -172,11 +172,44 @@ After implementing a fix, verify:
 ## Resolution Criteria
 
 This issue can be closed when:
-- [ ] Relative paths work correctly from any directory
-- [ ] All existing functionality continues to work
-- [ ] Tests pass for all scenarios in the test table above
-- [ ] Documentation is updated to reflect the fix
-- [ ] No regressions are introduced
+- [x] Relative paths work correctly from any directory
+- [x] All existing functionality continues to work
+- [x] Tests pass for all scenarios in the test table above
+- [x] Documentation is updated to reflect the fix
+- [x] No regressions are introduced
+
+## Resolution Details
+
+**Implementation:** Option 1 (Preserve User's Working Directory) was implemented successfully.
+
+**Changes Made:**
+1. **Modified `gdiff.bat`** and **`cdiff.bat`** to capture user's working directory:
+   ```batch
+   @echo off
+   set "USER_DIR=%CD%"
+   cd /d "%~dp0"
+   python src/gdiff.py --user-dir "%USER_DIR%" %*
+   ```
+
+2. **Updated `src/gdiff.py`** to handle `--user-dir` parameter and resolve relative paths correctly:
+   - Added `--user-dir` argument to argument parser
+   - Modified path resolution logic to use user directory for relative paths
+   - Maintained backward compatibility for absolute paths
+
+3. **Updated `src/cli.py`** to handle `--user-dir` parameter:
+   - Added `--user-dir` argument to argument parser
+   - Modified path resolution logic to use user directory for relative paths
+   - Maintained backward compatibility for absolute paths
+
+**Testing Results:**
+All test cases now pass:
+- ✅ `gdiff file1.txt file2.txt` from `test_files/` directory
+- ✅ `gdiff .\file1.txt .\file2.txt` from `test_files/` directory
+- ✅ `gdiff test_files\file1.txt test_files\file2.txt` from tool directory
+- ✅ Absolute paths continue to work from any directory
+- ✅ GUI functionality preserved (gdiff.bat launches GUI successfully)
+
+**Resolution Date:** 2025-01-11 15:27:00 IST
 
 ---
 

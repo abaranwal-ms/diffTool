@@ -27,6 +27,7 @@ Examples:
     parser.add_argument("file2", nargs="?", help="Second file to compare (optional)")
     parser.add_argument("-w", "--ignore-whitespace", action="store_true", 
                        help="Ignore whitespace differences (pre-set in GUI)")
+    parser.add_argument("--user-dir", help="Original user working directory for relative path resolution")
     
     args = parser.parse_args()
     
@@ -37,8 +38,25 @@ Examples:
         parser.error("If file2 is provided, file1 must also be provided")
     
     # Convert relative paths to absolute paths
-    file1 = os.path.abspath(args.file1) if args.file1 else None
-    file2 = os.path.abspath(args.file2) if args.file2 else None
+    # Use user directory if provided, otherwise use current directory
+    base_dir = args.user_dir if args.user_dir else os.getcwd()
+    
+    file1 = None
+    file2 = None
+    
+    if args.file1:
+        if os.path.isabs(args.file1):
+            file1 = args.file1
+        else:
+            file1 = os.path.join(base_dir, args.file1)
+        file1 = os.path.abspath(file1)
+    
+    if args.file2:
+        if os.path.isabs(args.file2):
+            file2 = args.file2
+        else:
+            file2 = os.path.join(base_dir, args.file2)
+        file2 = os.path.abspath(file2)
     
     # Check if files exist
     if file1 and not os.path.exists(file1):
