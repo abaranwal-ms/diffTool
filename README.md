@@ -1,11 +1,11 @@
 # Windows Diff Tool
 
-A powerful side-by-side file comparison tool for Windows, inspired by the Linux `diff` command but with enhanced visual features and both CLI and GUI interfaces.
+A powerful side-by-side file comparison tool for Windows, inspired by the Linux `diff` command but with enhanced visual features and separate CLI and GUI interfaces.
 
 ## Features
 
 - **Side-by-side comparison** with syntax highlighting
-- **Both CLI and GUI** interfaces
+- **Separate CLI and GUI** commands for specific use cases
 - **Colored terminal output** with Windows support
 - **Ignore whitespace** option
 - **Statistics** showing added, deleted, and changed lines
@@ -26,34 +26,40 @@ A powerful side-by-side file comparison tool for Windows, inspired by the Linux 
 
 Launch the graphical interface:
 ```bash
-python src/main.py --gui
-```
-or simply:
-```bash
-python src/main.py
+python src/gdiff.py
 ```
 
 **Or use the batch file:**
 ```bash
-wdiff.bat --gui
+gdiff.bat
+```
+
+**Launch GUI with files pre-selected:**
+```bash
+python src/gdiff.py file1.txt file2.txt
+```
+
+**Or use the batch file:**
+```bash
+gdiff.bat file1.txt file2.txt
 ```
 
 ### Command Line Interface
 
 Compare two files:
 ```bash
-python src/main.py file1.txt file2.txt
+python src/cdiff.py file1.txt file2.txt
 ```
 
 **Or use the batch file:**
 ```bash
-wdiff.bat file1.txt file2.txt
+cdiff.bat file1.txt file2.txt
 ```
 
 #### CLI Options
 
 ```bash
-python src/main.py [options] file1 file2
+python src/cdiff.py [options] file1 file2
 
 Options:
   -h, --help            Show help message
@@ -64,34 +70,51 @@ Options:
   --no-color            Disable colored output
   --width WIDTH         Output width (default: 120)
   -s, --stats           Show statistics
-  --gui                 Launch GUI interface
+```
+
+#### GUI Options
+
+```bash
+python src/gdiff.py [options] [file1] [file2]
+
+Options:
+  -h, --help            Show help message
+  -w, --ignore-whitespace
+                        Ignore whitespace differences (pre-set in GUI)
+  file1                 First file to compare (optional)
+  file2                 Second file to compare (optional)
 ```
 
 ### Examples
 
-1. **Basic comparison:**
+1. **Basic CLI comparison:**
    ```bash
-   wdiff.bat file1.txt file2.txt
+   cdiff.bat file1.txt file2.txt
    ```
 
-2. **Ignore whitespace:**
+2. **CLI with ignore whitespace:**
    ```bash
-   wdiff.bat -w file1.txt file2.txt
+   cdiff.bat -w file1.txt file2.txt
    ```
 
-3. **Show statistics:**
+3. **CLI with statistics:**
    ```bash
-   wdiff.bat -s file1.txt file2.txt
+   cdiff.bat -s file1.txt file2.txt
    ```
 
-4. **Custom width:**
+4. **CLI with custom width:**
    ```bash
-   wdiff.bat --width 100 file1.txt file2.txt
+   cdiff.bat --width 100 file1.txt file2.txt
    ```
 
 5. **Launch GUI:**
    ```bash
-   wdiff.bat --gui
+   gdiff.bat
+   ```
+
+6. **Launch GUI with files pre-selected:**
+   ```bash
+   gdiff.bat file1.txt file2.txt
    ```
 
 ## Features in Detail
@@ -141,19 +164,25 @@ Options:
 
 ## Adding to PATH (Optional)
 
-To use `wdiff` from anywhere on your system:
+To use `cdiff` and `gdiff` from anywhere on your system:
 
 1. Add the diffTool directory to your Windows PATH environment variable
-2. Create a `wdiff.cmd` file in a directory that's in your PATH:
+2. Or create `.cmd` files in a directory that's in your PATH:
    ```batch
+   # cdiff.cmd
    @echo off
-   "C:\path\to\diffTool\wdiff.bat" %*
+   "C:\path\to\diffTool\cdiff.bat" %*
+   
+   # gdiff.cmd
+   @echo off
+   "C:\path\to\diffTool\gdiff.bat" %*
    ```
 
 Then you can use:
 ```bash
-wdiff file1.txt file2.txt
-wdiff --gui
+cdiff file1.txt file2.txt
+gdiff file1.txt file2.txt
+gdiff
 ```
 
 ## Building Executable (Optional)

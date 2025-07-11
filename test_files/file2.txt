@@ -3,9 +3,8 @@ This is line 2
 This is line 3
 Common line A
 Common line B
-This line was added
 Common line C
-This line was changed
+This line has been changed
 Common line D
-Another added line
+This is a new line
 Final line
