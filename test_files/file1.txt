@@ -1,0 +1,10 @@
+This is line 1
+This is line 2
+This is line 3
+Common line A
+Common line B
+This line will be deleted
+Common line C
+This line will be changed
+Common line D
+Final line
